@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class PaymentAllocation extends Model
+{
+    protected $fillable = [
+        'payment_id',
+        'invoice_id',
+        'ledger_entry_id',
+        'allocated_amount',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'allocated_amount' => 'decimal:2',
+        ];
+    }
+
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class);
+    }
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function ledgerEntry(): BelongsTo
+    {
+        return $this->belongsTo(CustomerLedgerEntry::class, 'ledger_entry_id');
+    }
+}
